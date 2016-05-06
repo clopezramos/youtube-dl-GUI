@@ -3,7 +3,7 @@
         <ProjectGuid>{0EA869C9-3CC3-4349-BC8B-5552A9FBF284}</ProjectGuid>
         <ProjectVersion>15.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>youtube-dl-GUI.dpr</MainSource>
+        <MainSource>GUI.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -154,7 +154,7 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Source>
-                    <Source Name="MainSource">youtube-dl-GUI.dpr</Source>
+                    <Source Name="MainSource">GUI.dpr</Source>
                 </Source>
             </Delphi.Personality>
             <Deployment/>

@@ -1,4 +1,4 @@
-program yotube-dl-GUI;
+program GUI;
 
 uses
   Vcl.Forms,
