@@ -1,4 +1,4 @@
-object Form1: TForm1
+object FormMain: TFormMain
   Left = 0
   Top = 0
   Caption = 'youtube-dl GUI'
@@ -21,10 +21,6 @@ object Form1: TForm1
     Height = 400
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 216
-    ExplicitTop = 176
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
   object MainMenu: TMainMenu
     object FileMenu: TMenuItem

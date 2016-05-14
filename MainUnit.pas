@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, AboutUnit;
 
 type
-  TForm1 = class(TForm)
+  TFormMain = class(TForm)
   MainPanel: TPanel;
   MainMenu: TMainMenu;
   FileMenu: TMenuItem;
@@ -15,6 +15,7 @@ type
   Separator1: TMenuItem;
   Help: TMenuItem;
   About: TMenuItem;
+
   procedure AboutClick(Sender: TObject);
   procedure ExitClick(Sender: TObject);
 
@@ -25,24 +26,25 @@ type
   end;
 
 var
-  MainForm: TForm1;
+  MainForm: TFormMain;
 
 implementation
 
 {$R *.dfm}
 
-procedure TForm1.AboutClick(Sender: TObject);
+procedure TFormMain.AboutClick(Sender: TObject);
+
 begin
-  ShowMessage('youtube-dl GUI ver 1.0' + #13#10 + 'Created by clopezramos');
+  AboutUnit.AboutForm.ShowModal;
 end;
 
-procedure TForm1.ExitClick(Sender: TObject);
+procedure TFormMain.ExitClick(Sender: TObject);
 var
   buttonSelected : Integer;
 begin
-  buttonSelected := messagedlg('Are you sure you want to exit?',mtError, mbOKCancel, 0);
+  buttonSelected := messagedlg('Are you sure you want to exit?', mtConfirmation, mbYesNo, 0);
 
-  if buttonSelected = mrOK then MainForm.DoHide();
+  if buttonSelected = mrYes then Application.MainForm.Close;
 end;
 
 end.

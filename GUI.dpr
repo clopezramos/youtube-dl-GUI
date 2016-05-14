@@ -2,13 +2,15 @@ program GUI;
 
 uses
   Vcl.Forms,
-  MainUnit in 'MainUnit.pas' {MainForm};
+  MainUnit in 'MainUnit.pas' {MainForm},
+  AboutUnit in 'AboutUnit.pas' {AboutForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, MainForm);
+  Application.CreateForm(TFormMain, MainForm);
+  Application.CreateForm(TFormAbout, AboutForm);
   Application.Run;
 end.
