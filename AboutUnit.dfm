@@ -51,9 +51,7 @@ object FormAbout: TFormAbout
     Width = 94
     Height = 13
     Cursor = crHandPoint
-    Hint = 
-      'https://github.com/rg3/youtube-dl/commit/28b4f73620c82e7007b3154' +
-      'e4d5f437cf6fb2608'
+    Hint = 'https://github.com/rg3/youtube-dl/commits/2016.05.10'
     Caption = 'release 2016.05.10'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clHotLight
