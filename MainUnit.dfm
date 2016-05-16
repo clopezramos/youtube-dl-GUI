@@ -19,6 +19,7 @@ object FormMain: TFormMain
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object MainPanel: TPanel
@@ -58,11 +59,12 @@ object FormMain: TFormMain
       TabOrder = 1
       OnClick = GoButtonClick
     end
-    object PathFilenameEdit: TJvFilenameEdit
+    object PathJvDirectoryEdit: TJvDirectoryEdit
       Left = 16
       Top = 336
       Width = 457
       Height = 21
+      DialogKind = dkWin32
       TabOrder = 2
       Text = ''
     end
