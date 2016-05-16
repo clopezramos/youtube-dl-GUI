@@ -17,6 +17,8 @@ object FormMain: TFormMain
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object MainPanel: TPanel
@@ -27,11 +29,18 @@ object FormMain: TFormMain
     Align = alClient
     TabOrder = 0
     object UrlLabel: TLabel
-      Left = 24
+      Left = 16
       Top = 21
       Width = 117
       Height = 13
       Caption = 'Place a youtube url here'
+    end
+    object PathLabel: TLabel
+      Left = 16
+      Top = 317
+      Width = 22
+      Height = 13
+      Caption = 'Path'
     end
     object UrlEdit: TEdit
       Left = 16
@@ -41,13 +50,21 @@ object FormMain: TFormMain
       TabOrder = 0
     end
     object GoButton: TButton
-      Left = 488
+      Left = 496
       Top = 334
       Width = 75
       Height = 25
       Caption = 'Go!'
       TabOrder = 1
       OnClick = GoButtonClick
+    end
+    object JvFilenameEdit1: TJvFilenameEdit
+      Left = 16
+      Top = 336
+      Width = 457
+      Height = 21
+      TabOrder = 2
+      Text = ''
     end
   end
   object MainMenu: TMainMenu
@@ -70,7 +87,7 @@ object FormMain: TFormMain
     end
   end
   object youtubedlProcess: TJvCreateProcess
-    Left = 560
-    Top = 296
+    Left = 552
+    Top = 288
   end
 end
