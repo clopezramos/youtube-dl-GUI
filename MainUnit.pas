@@ -55,7 +55,7 @@ end;
 
 procedure TFormMain.GoButtonClick(Sender: TObject);
 begin
-  youtubedlProcess.ApplicationName :=  'C:\youtube-dl-GUI\dep\youtube-dl.exe';
+  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
   youtubedlProcess.CommandLine := ' ' + UrlEdit.Text;
   youtubedlProcess.Run;
 end;

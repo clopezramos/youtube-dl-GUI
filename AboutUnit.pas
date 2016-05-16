@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, ShellApi;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, JvLinkLabelTools;
 
 type
   TFormAbout = class(TForm)
@@ -33,12 +33,12 @@ implementation
 
 procedure TFormAbout.LabelAuthorClick(Sender: TObject);
 begin
-  ShellExecute(0, 'Open', PChar(LabelAuthor.Hint), nil, nil, SW_SHOWNORMAL);
+  TWebTools.OpenWebPage(LabelAuthor.Hint);
 end;
 
 procedure TFormAbout.LabelVersionClick(Sender: TObject);
 begin
-  ShellExecute(0, 'Open', PChar(LabelVersion.Hint), nil, nil, SW_SHOWNORMAL);
+  TWebTools.OpenWebPage(LabelVersion.Hint);
 end;
 
 procedure TFormAbout.OkButtonClick(Sender: TObject);
