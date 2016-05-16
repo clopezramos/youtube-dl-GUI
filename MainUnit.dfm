@@ -4,12 +4,12 @@ object FormMain: TFormMain
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'youtube-dl GUI'
   ClientHeight = 400
-  ClientWidth = 600
+  ClientWidth = 520
   Color = clBtnFace
   Constraints.MaxHeight = 459
-  Constraints.MaxWidth = 616
+  Constraints.MaxWidth = 536
   Constraints.MinHeight = 459
-  Constraints.MinWidth = 616
+  Constraints.MinWidth = 536
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -25,34 +25,35 @@ object FormMain: TFormMain
   object MainPanel: TPanel
     Left = 0
     Top = 0
-    Width = 600
+    Width = 520
     Height = 400
     Align = alClient
     TabOrder = 0
+    ExplicitTop = 8
     object UrlLabel: TLabel
-      Left = 16
+      Left = 19
       Top = 21
       Width = 117
       Height = 13
       Caption = 'Place a youtube url here'
     end
     object PathLabel: TLabel
-      Left = 16
-      Top = 317
+      Left = 19
+      Top = 67
       Width = 22
       Height = 13
       Caption = 'Path'
     end
     object UrlEdit: TEdit
-      Left = 16
+      Left = 19
       Top = 40
       Width = 482
       Height = 21
       TabOrder = 0
     end
     object GoButton: TButton
-      Left = 496
-      Top = 334
+      Left = 426
+      Top = 359
       Width = 75
       Height = 25
       Caption = 'Go!'
@@ -60,13 +61,28 @@ object FormMain: TFormMain
       OnClick = GoButtonClick
     end
     object PathJvDirectoryEdit: TJvDirectoryEdit
-      Left = 16
-      Top = 336
-      Width = 457
+      Left = 19
+      Top = 86
+      Width = 482
       Height = 21
       DialogKind = dkWin32
       TabOrder = 2
       Text = ''
+    end
+    object OutputBox: TListBox
+      Left = 19
+      Top = 272
+      Width = 482
+      Height = 72
+      ItemHeight = 13
+      TabOrder = 3
+    end
+    object ProgressBar: TProgressBar
+      Left = 19
+      Top = 359
+      Width = 386
+      Height = 25
+      TabOrder = 4
     end
   end
   object MainMenu: TMainMenu
@@ -89,7 +105,7 @@ object FormMain: TFormMain
     end
   end
   object youtubedlProcess: TJvCreateProcess
-    Left = 552
-    Top = 288
+    Left = 472
+    Top = 304
   end
 end

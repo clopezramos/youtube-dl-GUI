@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.UITypes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Mask, Vcl.ComCtrls,
   JvComponentBase, JvCreateProcess, JvExMask, JvToolEdit, AboutUnit;
 
 type
@@ -21,6 +21,8 @@ type
     GoButton: TButton;
     PathLabel: TLabel;
     PathJvDirectoryEdit: TJvDirectoryEdit;
+    OutputBox: TListBox;
+    ProgressBar: TProgressBar;
 
     { TODO 1 -oclopezramos -cimprove : Change youtubedlProcess visibility to private }
     youtubedlProcess: TJvCreateProcess;
@@ -84,9 +86,12 @@ begin
 end;
 
 procedure TFormMain.StartDownloadProcess();
+var
+  commands: string;
 begin
   youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
-  youtubedlProcess.CommandLine := ' ' + UrlEdit.Text;
+  commands := ' ' + '-o "' + outputPath + '\%(title)s.%(ext)s' + '" ' + UrlEdit.Text;
+  youtubedlProcess.CommandLine := commands;
   youtubedlProcess.Run;
 end;
 
