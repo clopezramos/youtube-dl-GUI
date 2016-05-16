@@ -33,12 +33,17 @@ type
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure youtubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
+    procedure youtubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
   private
     outputPath: String;
 
-    procedure StartDownloadProcess();
-    procedure ReadConfigFile(Parameter: string; var Output: string);
-    procedure WriteConfigFile(Parameter: string; Input: string);
+    procedure startDownloadProcess;
+    procedure readConfigFile(Parameter: string; var Output: string);
+    procedure writeConfigFile(Parameter: string; Input: string);
+    procedure addLog(const Text: string);
+    procedure clearLogs;
+    procedure getPercentageLog(Text: string; var Result: Boolean);
   public
 
   end;
@@ -52,7 +57,7 @@ implementation
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  ReadConfigFile('outputPath', outputPath);
+  readConfigFile('outputPath', outputPath);
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -62,12 +67,15 @@ end;
 
 procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  WriteConfigFile('outputPath', PathJvDirectoryEdit.Text);
+  writeConfigFile('outputPath', PathJvDirectoryEdit.Text);
 end;
 
 procedure TFormMain.GoButtonClick(Sender: TObject);
 begin
-  StartDownloadProcess();
+  clearLogs;
+  startDownloadProcess;
+  ProgressBar.Position := 0;
+  GoButton.Enabled:= false;
 end;
 
 procedure TFormMain.AboutMenuItemClick(Sender: TObject);
@@ -85,17 +93,36 @@ begin
   if buttonSelected = mrYes then Application.MainForm.Close;
 end;
 
-procedure TFormMain.StartDownloadProcess();
+procedure TFormMain.youtubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
+begin
+  if S = #$C then
+    clearLogs
+  else if not S.IsEmpty then
+    addLog(S)
+end;
+
+procedure TFormMain.youtubedlProcessTerminate(Sender: TObject;
+  ExitCode: Cardinal);
+begin
+  GoButton.Enabled:= true;
+end;
+
+{ Private procedures }
+
+procedure TFormMain.startDownloadProcess;
 var
   commands: string;
 begin
-  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
-  commands := ' ' + '-o "' + outputPath + '\%(title)s.%(ext)s' + '" ' + UrlEdit.Text;
+  commands := ' ' + '-o "' + PathJvDirectoryEdit.Text + '\%(title)s.%(ext)s' + '" ' + UrlEdit.Text;
   youtubedlProcess.CommandLine := commands;
+  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
+  youtubedlProcess.ConsoleOptions := youtubedlProcess.ConsoleOptions + [coRedirect];
+  youtubedlProcess.StartupInfo.ShowWindow := swHide;
+  youtubedlProcess.StartupInfo.DefaultWindowState := False;
   youtubedlProcess.Run;
 end;
 
-procedure TFormMain.ReadConfigFile(Parameter: string; var Output: string);
+procedure TFormMain.readConfigFile(Parameter: string; var Output: string);
 var
   configFile: TextFile;
   line: string;
@@ -121,7 +148,7 @@ begin
   CloseFile(configFile);
 end;
 
-procedure TFormMain.WriteConfigFile(Parameter: string; Input: string);
+procedure TFormMain.writeConfigFile(Parameter: string; Input: string);
 var
   configFile: TextFile;
   line: string;
@@ -158,4 +185,36 @@ begin
   CloseFile(configFile);
 end;
 
+procedure TFormMain.addLog(const Text: string);
+begin
+  OutputBox.AddItem(FormatDateTime('HH:NN:SS  ', Now) + Text, nil);
+  OutputBox.ItemIndex := OutputBox.Items.Count - 1;
+end;
+
+procedure TFormMain.clearLogs;
+begin
+  OutputBox.Clear;
+end;
+
+{
+procedure TFormMain.getPercentageLog(Text: string; var Result: Boolean);
+var
+  word: string;
+  position: integer;
+begin
+  word := Copy(Text, 1, Pos(' ', Text) - 1);
+  if word = '[download]' then
+  begin
+    Text := Copy(Text, Pos(' ', Text) + 1, Length(Text) - Length(word) + 1);
+    word := Copy(Text, 1, Pos(' ', Text) - 1);
+    integer:= Pos('%', Text);
+    if integer = 2 or integer = 3 then
+
+    word := Copy(word, 1, Pos('%', Text) - 1);
+
+    Result:= true;
+  end;
+  Result:= false;
+end;
+}
 end.

@@ -29,7 +29,6 @@ object FormMain: TFormMain
     Height = 400
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 8
     object UrlLabel: TLabel
       Left = 19
       Top = 21
@@ -71,10 +70,16 @@ object FormMain: TFormMain
     end
     object OutputBox: TListBox
       Left = 19
-      Top = 272
+      Top = 248
       Width = 482
-      Height = 72
-      ItemHeight = 13
+      Height = 96
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -9
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ItemHeight = 11
+      ParentFont = False
       TabOrder = 3
     end
     object ProgressBar: TProgressBar
@@ -105,6 +110,8 @@ object FormMain: TFormMain
     end
   end
   object youtubedlProcess: TJvCreateProcess
+    OnTerminate = youtubedlProcessTerminate
+    OnRead = youtubedlProcessRead
     Left = 472
     Top = 304
   end
