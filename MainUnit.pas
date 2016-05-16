@@ -3,9 +3,9 @@ unit MainUnit;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, AboutUnit,
-  Vcl.Mask, JvExMask, JvToolEdit, JvComponentBase, JvCreateProcess;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.UITypes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Mask,
+  JvExMask, JvToolEdit, JvComponentBase, JvCreateProcess, AboutUnit;
 
 type
   TFormMain = class(TForm)
@@ -20,20 +20,22 @@ type
     UrlLabel: TLabel;
     GoButton: TButton;
     PathLabel: TLabel;
-    JvFilenameEdit1: TJvFilenameEdit;
+    PathFilenameEdit: TJvFilenameEdit;
+
+    { TODO 1 -oclopezramos -cimprove : Change youtubedlProcess visibility to private }
     youtubedlProcess: TJvCreateProcess;
 
-    procedure AboutMenuItemClick(Sender: TObject);
-    procedure ExitMenuItemClick(Sender: TObject);
-    procedure GoButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-
+    procedure GoButtonClick(Sender: TObject);
+    procedure AboutMenuItemClick(Sender: TObject);
+    procedure ExitMenuItemClick(Sender: TObject);
   private
     outputPath: String;
 
+    procedure StartDownloadProcess();
     procedure ReadConfigFile(Parameter: string; Output: string);
-    //procedure WriteConfigFile(Parameter: string; Input: string);
+    procedure WriteConfigFile(Parameter: string; Input: string);
   public
 
   end;
@@ -45,14 +47,41 @@ implementation
 
 {$R *.dfm}
 
-procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  //WriteConfigFile('outputPath', );
-end;
-
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   ReadConfigFile('outputPath', outputPath);
+end;
+
+procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  WriteConfigFile('outputPath', PathFilenameEdit.FileName);
+end;
+
+procedure TFormMain.GoButtonClick(Sender: TObject);
+begin
+  StartDownloadProcess();
+end;
+
+procedure TFormMain.AboutMenuItemClick(Sender: TObject);
+
+begin
+  AboutUnit.AboutForm.ShowModal;
+end;
+
+procedure TFormMain.ExitMenuItemClick(Sender: TObject);
+var
+  buttonSelected : Integer;
+begin
+  buttonSelected := messagedlg('Are you sure you want to exit?', mtConfirmation, mbYesNo, 0);
+
+  if buttonSelected = mrYes then Application.MainForm.Close;
+end;
+
+procedure TFormMain.StartDownloadProcess();
+begin
+  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
+  youtubedlProcess.CommandLine := ' ' + UrlEdit.Text;
+  youtubedlProcess.Run;
 end;
 
 procedure TFormMain.ReadConfigFile(Parameter: string; Output: string);
@@ -80,26 +109,9 @@ begin
   end;
 end;
 
-procedure TFormMain.AboutMenuItemClick(Sender: TObject);
-
+procedure TFormMain.WriteConfigFile(Parameter: string; Input: string);
 begin
-  AboutUnit.AboutForm.ShowModal;
-end;
 
-procedure TFormMain.ExitMenuItemClick(Sender: TObject);
-var
-  buttonSelected : Integer;
-begin
-  buttonSelected := messagedlg('Are you sure you want to exit?', mtConfirmation, mbYesNo, 0);
-
-  if buttonSelected = mrYes then Application.MainForm.Close;
-end;
-
-procedure TFormMain.GoButtonClick(Sender: TObject);
-begin
-  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
-  youtubedlProcess.CommandLine := ' ' + UrlEdit.Text;
-  youtubedlProcess.Run;
 end;
 
 end.

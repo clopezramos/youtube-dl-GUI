@@ -58,7 +58,7 @@ object FormMain: TFormMain
       TabOrder = 1
       OnClick = GoButtonClick
     end
-    object JvFilenameEdit1: TJvFilenameEdit
+    object PathFilenameEdit: TJvFilenameEdit
       Left = 16
       Top = 336
       Width = 457
