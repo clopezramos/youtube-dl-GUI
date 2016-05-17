@@ -11,14 +11,16 @@ type
   TFormMain = class(TForm)
   private
     outputPath: String;
+    lookingQuality: Boolean;
 
     procedure startDownload(Url: string; Path: string; Format: string);
     procedure readConfigFile(Parameter: string; var Output: string);
     procedure writeConfigFile(Parameter: string; Input: string);
-    procedure addLog(const Text: string);
-    procedure clearLogs;
     function getPercentageLog(Text: string; var percentage: string) : Boolean;
-    function getQualityString(Link: string) : string;
+    procedure getQuality(Link: string);
+    function getQualityLog(Text: string; var quality: string) : Boolean;
+    function isStrANumber(const str: string) : Boolean;
+    function getFirstStr(const str: string) : string;
   published
     MainPanel: TPanel;
     MainMenu: TMainMenu;
@@ -51,6 +53,12 @@ type
     procedure YoutubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
     procedure UrlEditOnBeforePaste(Sender: TObject; var s: String);
     procedure RefreshQualityButtonClick(Sender: TObject);
+    procedure AddLog(const Text: string);
+    procedure ClearLogs;
+    procedure AddQuality(const Text: string);
+    procedure ClearQuality;
+    procedure UrlEditOnKeyPress(Sender: TObject; var Key: Char);
+    procedure UrlEditOnEditChange(Sender: TObject);
   public
 
   end;
@@ -67,7 +75,9 @@ begin
   readConfigFile('outputPath', outputPath);
   UrlEdit.Create(Self);
   UrlEdit.OnBeforePaste := UrlEditOnBeforePaste;
-  UrlEdit.SetBounds(19, 40, 482,21);
+  UrlEdit.OnKeyPress := UrlEditOnKeyPress;
+  UrlEdit.OnChange := UrlEditOnEditChange;
+  UrlEdit.SetBounds(16, 40, 482, 21);
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -82,13 +92,17 @@ end;
 
 procedure TFormMain.GoButtonClick(Sender: TObject);
 begin
-  clearLogs;
-  startDownload(UrlEdit.Text, PathJvDirectoryEdit.Text, '');
-  ProgressBar.Position := 0;
-  GoButton.Enabled:= false;
-  UrlEdit.Enabled:= false;
-  PathJvDirectoryEdit.Enabled:= false;
-  RefreshQualityButton.Enabled:= false;
+  if QualityBox.Items.Count > 0 then
+  begin
+    ClearLogs;
+    startDownload(UrlEdit.Text, PathJvDirectoryEdit.Text, getFirstStr(QualityBox.Items[QualityBox.ItemIndex]));
+    ProgressBar.Position := 0;
+    GoButton.Enabled:= false;
+    UrlEdit.Enabled:= false;
+    PathJvDirectoryEdit.Enabled:= false;
+    RefreshQualityButton.Enabled:= false;
+    QualityBox.Enabled:= false;
+  end;
 end;
 
 procedure TFormMain.AboutMenuItemClick(Sender: TObject);
@@ -108,36 +122,103 @@ end;
 
 procedure TFormMain.YoutubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
 var
-  percentage: string;
+  output: string;
 begin
   if S = #$C then
-    clearLogs
+    ClearLogs
   else if not S.IsEmpty then
   begin
-    percentage := '';
-    if getPercentageLog(S, percentage) then
-      ProgressBar.Position:= strtoint(percentage)
-    else addLog(S)
+    output := '';
+    if lookingQuality then
+    begin
+      if getQualityLog(S, output) then
+        AddQuality(output);
+    end
+    else
+    begin
+      if getPercentageLog(S, output) then
+        ProgressBar.Position:= strtoint(output)
+      else AddLog(S)
+    end;
   end;
 end;
 
-procedure TFormMain.YoutubedlProcessTerminate(Sender: TObject;
-  ExitCode: Cardinal);
+procedure TFormMain.YoutubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
 begin
   GoButton.Enabled:= true;
   UrlEdit.Enabled:= true;
   PathJvDirectoryEdit.Enabled:= true;
   RefreshQualityButton.Enabled:= true;
+  QualityBox.Enabled:= true;
+
+  if QualityBox.Count = 0 then
+  if lookingQuality then
+    AddLog('Video not available');
+  lookingQuality:= false;
 end;
 
 procedure TFormMain.UrlEditOnBeforePaste(Sender: TObject; var s: String);
 begin
-  getQualityString(s);
+  ClearLogs;
+  ClearQuality;
+  UrlEdit.Enabled:= false;
+  RefreshQualityButton.Enabled:= false;
+  GoButton.Enabled:= false;
+  QualityBox.Enabled:= false;
+  getQuality(s);
 end;
 
 procedure TFormMain.RefreshQualityButtonClick(Sender: TObject);
 begin
-  getQualityString(UrlEdit.Text);
+  ClearLogs;
+  ClearQuality;
+  UrlEdit.Enabled:= false;
+  RefreshQualityButton.Enabled:= false;
+  GoButton.Enabled:= false;
+  QualityBox.Enabled:= false;
+  getQuality(UrlEdit.Text);
+end;
+
+procedure TFormMain.AddLog(const Text: string);
+begin
+  OutputBox.AddItem(FormatDateTime('HH:NN:SS  ', Now) + Text, nil);
+  OutputBox.ItemIndex := OutputBox.Items.Count - 1;
+end;
+
+procedure TFormMain.ClearLogs;
+begin
+  OutputBox.Clear;
+end;
+
+procedure TFormMain.AddQuality(const Text: string);
+begin
+  QualityBox.AddItem(Text, nil);
+  QualityBox.ItemIndex := QualityBox.Items.Count - 1;
+end;
+
+procedure TFormMain.ClearQuality;
+begin
+  QualityBox.Clear;
+end;
+
+procedure TFormMain.UrlEditOnKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Ord(Key) = VK_RETURN then
+  begin
+    ClearLogs;
+    ClearQuality;
+    UrlEdit.Enabled:= false;
+    RefreshQualityButton.Enabled:= false;
+    GoButton.Enabled:= false;
+    QualityBox.Enabled:= false;
+    getQuality(UrlEdit.Text);
+  end;
+end;
+
+procedure TFormMain.UrlEditOnEditChange(Sender: TObject);
+begin
+  if QualityBox.Items.Count > 0 then
+    ClearQuality;
 end;
 
 { Private procedures }
@@ -218,17 +299,6 @@ begin
   CloseFile(configFile);
 end;
 
-procedure TFormMain.addLog(const Text: string);
-begin
-  OutputBox.AddItem(FormatDateTime('HH:NN:SS  ', Now) + Text, nil);
-  OutputBox.ItemIndex := OutputBox.Items.Count - 1;
-end;
-
-procedure TFormMain.clearLogs;
-begin
-  OutputBox.Clear;
-end;
-
 function TFormMain.getPercentageLog(Text: string; var percentage: string) : boolean;
 var
   StringList: TStringList;
@@ -238,16 +308,17 @@ begin
   StringList := TStringList.Create();
   StringList.Text := StringReplace(Text, ' ', #13#10, [rfReplaceAll]);
 
+  // erase empty elements
+  for position := StringList.Count - 1 downto 0 do
+  begin
+    if Trim(StringList[position]) = '' then
+      StringList.Delete(position);
+  end;
+
   // search keyword
   if ansicomparestr('[download]', StringList[0]) = 0 then
   begin
-    // erase empty elements
-    for position := StringList.count - 1 downto 0 do
-    begin
-    if Trim(StringList[position]) = '' then
-      StringList.Delete(position);
-    end;
-    // get string with the integer value
+    // get string with the percentage value
     if StringList[1].Length < 7 then
     begin
       if Pos('.', StringList[1]) > 0 then
@@ -264,11 +335,11 @@ begin
   StringList.Free();
 end;
 
-function TFormMain.getQualityString(Link: string) : string;
+procedure TFormMain.getQuality(Link: string);
 var
   commands: string;
 begin
-  Result:= '';
+  lookingQuality:= true;
   commands := ' ' + '-F "' + Link + '"';
   YoutubedlProcess.CommandLine := commands;
   YoutubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
@@ -278,4 +349,51 @@ begin
   YoutubedlProcess.Run;
 end;
 
+function TFormMain.getQualityLog(Text: string; var quality: string) : Boolean;
+var
+  StringList: TStringList;
+  position: Integer;
+begin
+  Result := False;
+  StringList := TStringList.Create();
+  StringList.Text := StringReplace(Text, ' ', #13#10, [rfReplaceAll]);
+
+  // erase empty elements
+  for position := StringList.Count - 1 downto 0 do
+  begin
+    if Trim(StringList[position]) = '' then
+      StringList.Delete(position);
+  end;
+
+  // search for a number on first element
+  if StringList.Count > 2 then
+  if isStrANumber(StringList[0]) then
+  begin
+    quality := Trim(Text);
+    Result := True;
+  end;
+
+  StringList.Free();
+end;
+
+function TFormMain.isStrANumber(const str: string): Boolean;
+var
+  P: PChar;
+begin
+  P := PChar(str);
+  Result := False;
+  while P^ <> #0 do
+  begin
+    if not CharInSet(P^, ['0'..'9']) then Exit;
+    Inc(P);
+  end;
+  Result := True;
+end;
+
+function TFormMain.getFirstStr(const str: string): string;
+begin
+  Result := Copy(str, 1, Pos(' ', str) - 1);
+end;
+
 end.
+

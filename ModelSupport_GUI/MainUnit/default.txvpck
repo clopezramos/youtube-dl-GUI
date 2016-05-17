@@ -11,7 +11,7 @@
     </reference>
     <reference referencedUin="delphi:e_class:src:GUI:MainUnit.TFormMain">
       <property name="$shortcutReference" value="true" />
-      <property name="bounds" value="10,10,218,625" />
+      <property name="bounds" value="10,10,218,745" />
       <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.RefreshQualityButtonClick(System.TObject)" />
       <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.outputPath" />
       <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.startDownload(System.string,System.string,System.string)" />
@@ -48,6 +48,17 @@
       <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.YoutubedlProcessRead(System.TObject,System.string,System.Boolean)" />
       <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.YoutubedlProcessTerminate(System.TObject,System.Cardinal)" />
       <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.UrlEditOnBeforePaste(System.TObject,ref@System.string)" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.lookingQuality" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.getQuality(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.getQualityLog(System.string,ref@System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.isStrANumber(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.getFirstStr(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.AddLog(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.ClearLogs()" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.AddQuality(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.ClearQuality()" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.UrlEditOnKeyPress(System.TObject,ref@System.Char)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.UrlEditOnEditChange(System.TObject)" />
     </reference>
   </view>
 </nodeSet>

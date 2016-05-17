@@ -30,34 +30,34 @@ object FormMain: TFormMain
     Align = alClient
     TabOrder = 0
     object UrlLabel: TLabel
-      Left = 19
+      Left = 16
       Top = 21
       Width = 117
       Height = 13
       Caption = 'Place a youtube url here'
     end
     object PathLabel: TLabel
-      Left = 19
+      Left = 16
       Top = 67
       Width = 22
       Height = 13
       Caption = 'Path'
     end
     object QualityLabel: TLabel
-      Left = 19
-      Top = 130
+      Left = 16
+      Top = 113
       Width = 64
       Height = 13
       Caption = 'Select quality'
     end
     object UrlEdit: TCustomEdit
-      Left = 19
+      Left = 16
       Top = 40
       Width = 482
       Height = 21
     end
     object GoButton: TButton
-      Left = 426
+      Left = 423
       Top = 359
       Width = 75
       Height = 25
@@ -66,7 +66,7 @@ object FormMain: TFormMain
       OnClick = GoButtonClick
     end
     object PathJvDirectoryEdit: TJvDirectoryEdit
-      Left = 19
+      Left = 16
       Top = 86
       Width = 482
       Height = 21
@@ -75,8 +75,8 @@ object FormMain: TFormMain
       Text = ''
     end
     object OutputBox: TListBox
-      Left = 19
-      Top = 272
+      Left = 16
+      Top = 281
       Width = 482
       Height = 72
       Font.Charset = DEFAULT_CHARSET
@@ -89,23 +89,23 @@ object FormMain: TFormMain
       TabOrder = 3
     end
     object ProgressBar: TProgressBar
-      Left = 19
+      Left = 16
       Top = 359
       Width = 386
       Height = 25
       TabOrder = 4
     end
     object QualityBox: TListBox
-      Left = 19
-      Top = 149
+      Left = 16
+      Top = 132
       Width = 426
-      Height = 97
+      Height = 143
       ItemHeight = 13
       TabOrder = 5
     end
     object RefreshQualityButton: TButton
-      Left = 451
-      Top = 221
+      Left = 448
+      Top = 250
       Width = 50
       Height = 25
       Caption = 'Refresh'
@@ -135,7 +135,7 @@ object FormMain: TFormMain
   object YoutubedlProcess: TJvCreateProcess
     OnTerminate = YoutubedlProcessTerminate
     OnRead = YoutubedlProcessRead
-    Left = 472
+    Left = 456
     Top = 304
   end
 end
