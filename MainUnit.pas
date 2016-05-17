@@ -25,7 +25,7 @@ type
     ProgressBar: TProgressBar;
 
     { TODO 1 -oclopezramos -cimprove : Change youtubedlProcess visibility to private }
-    youtubedlProcess: TJvCreateProcess;
+    YoutubedlProcess: TJvCreateProcess;
 
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -33,8 +33,8 @@ type
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure youtubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
-    procedure youtubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
+    procedure YoutubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
+    procedure YoutubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
   private
     outputPath: String;
 
@@ -43,7 +43,7 @@ type
     procedure writeConfigFile(Parameter: string; Input: string);
     procedure addLog(const Text: string);
     procedure clearLogs;
-    procedure getPercentageLog(Text: string; var Result: Boolean);
+    function getPercentageLog(Text: string; var percentage: string) : Boolean;
   public
 
   end;
@@ -93,15 +93,22 @@ begin
   if buttonSelected = mrYes then Application.MainForm.Close;
 end;
 
-procedure TFormMain.youtubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
+procedure TFormMain.YoutubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
+var
+  percentage: string;
 begin
   if S = #$C then
     clearLogs
   else if not S.IsEmpty then
-    addLog(S)
+  begin
+    percentage := '';
+    if getPercentageLog(S, percentage) then
+      ProgressBar.Position:= strtoint(percentage)
+    else addLog(S)
+  end;
 end;
 
-procedure TFormMain.youtubedlProcessTerminate(Sender: TObject;
+procedure TFormMain.YoutubedlProcessTerminate(Sender: TObject;
   ExitCode: Cardinal);
 begin
   GoButton.Enabled:= true;
@@ -114,12 +121,12 @@ var
   commands: string;
 begin
   commands := ' ' + '-o "' + PathJvDirectoryEdit.Text + '\%(title)s.%(ext)s' + '" ' + UrlEdit.Text;
-  youtubedlProcess.CommandLine := commands;
-  youtubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
-  youtubedlProcess.ConsoleOptions := youtubedlProcess.ConsoleOptions + [coRedirect];
-  youtubedlProcess.StartupInfo.ShowWindow := swHide;
-  youtubedlProcess.StartupInfo.DefaultWindowState := False;
-  youtubedlProcess.Run;
+  YoutubedlProcess.CommandLine := commands;
+  YoutubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
+  YoutubedlProcess.ConsoleOptions := YoutubedlProcess.ConsoleOptions + [coRedirect];
+  YoutubedlProcess.StartupInfo.ShowWindow := swHide;
+  YoutubedlProcess.StartupInfo.DefaultWindowState := False;
+  YoutubedlProcess.Run;
 end;
 
 procedure TFormMain.readConfigFile(Parameter: string; var Output: string);
@@ -196,25 +203,39 @@ begin
   OutputBox.Clear;
 end;
 
-{
-procedure TFormMain.getPercentageLog(Text: string; var Result: Boolean);
+function TFormMain.getPercentageLog(Text: string; var percentage: string) : boolean;
 var
-  word: string;
-  position: integer;
+  StringList: TStringList;
+  position: Integer;
 begin
-  word := Copy(Text, 1, Pos(' ', Text) - 1);
-  if word = '[download]' then
+  Result := False;
+  StringList := TStringList.Create();
+  StringList.Text := StringReplace(Text, ' ', #13#10, [rfReplaceAll]);
+
+  // search keyword
+  if ansicomparestr('[download]', StringList[0]) = 0 then
   begin
-    Text := Copy(Text, Pos(' ', Text) + 1, Length(Text) - Length(word) + 1);
-    word := Copy(Text, 1, Pos(' ', Text) - 1);
-    integer:= Pos('%', Text);
-    if integer = 2 or integer = 3 then
-
-    word := Copy(word, 1, Pos('%', Text) - 1);
-
-    Result:= true;
+    // erase empty elements
+    for position := StringList.count - 1 downto 0 do
+    begin
+    if Trim(StringList[position]) = '' then
+      StringList.Delete(position);
+    end;
+    // get string with the integer value
+    if StringList[1].Length < 7 then
+    begin
+      if Pos('.', StringList[1]) > 0 then
+      begin
+        position := Pos('%', StringList[1]);
+        if position = StringList[1].Length then
+        begin
+          percentage := Copy(StringList[1], 1, Pos('.', StringList[1]) - 1);
+          Result := True;
+        end;
+      end;
+    end;
   end;
-  Result:= false;
+  StringList.Free();
 end;
-}
+
 end.

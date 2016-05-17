@@ -70,9 +70,9 @@ object FormMain: TFormMain
     end
     object OutputBox: TListBox
       Left = 19
-      Top = 248
+      Top = 272
       Width = 482
-      Height = 96
+      Height = 72
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -9
@@ -109,9 +109,9 @@ object FormMain: TFormMain
       end
     end
   end
-  object youtubedlProcess: TJvCreateProcess
-    OnTerminate = youtubedlProcessTerminate
-    OnRead = youtubedlProcessRead
+  object YoutubedlProcess: TJvCreateProcess
+    OnTerminate = YoutubedlProcessTerminate
+    OnRead = YoutubedlProcessRead
     Left = 472
     Top = 304
   end
