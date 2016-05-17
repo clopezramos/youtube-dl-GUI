@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="7h71bnw7jhb4ngbl_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:GUI:CustomTextEditUnit.TStringEvent">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,89,36" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:GUI:CustomTextEditUnit.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:GUI:CustomTextEditUnit.@unitclass.Register()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:GUI:CustomTextEditUnit.TCustomEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="118,1,180,162" />
+      <reference referencedUin="delphi:e_field:src:GUI:CustomTextEditUnit.TCustomEdit.FOnBeforePaste" />
+      <reference referencedUin="delphi:e_field:src:GUI:CustomTextEditUnit.TCustomEdit.FOnAfterPaste" />
+      <reference referencedUin="delphi:e_method:src:GUI:CustomTextEditUnit.TCustomEdit.WMPaste(ref@Winapi.Messages.TMessage)" />
+      <reference referencedUin="delphi:e_property:src:GUI:CustomTextEditUnit.TCustomEdit.OnBeforePaste" />
+      <reference referencedUin="delphi:e_property:src:GUI:CustomTextEditUnit.TCustomEdit.OnAfterPaste" />
+      <reference referencedUin="delphi:l_ast:src:GUI:CustomTextEditUnit.TCustomEdit.FOnBeforePaste">
+        <property name="sourceAnchor" value="118,28" />
+        <property name="targetAnchor" value="99,28" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_ast:src:GUI:CustomTextEditUnit.TCustomEdit.OnBeforePaste">
+        <property name="sourceAnchor" value="118,20" />
+        <property name="targetAnchor" value="99,20" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+  </view>
+</nodeSet>

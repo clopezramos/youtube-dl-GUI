@@ -4,5 +4,24 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:GUI:AboutUnit.TFormAbout">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,137,235" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.OkButton" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.Label1" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.Label2" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.Label3" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.LabelVersion" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.LabelAuthor" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.TFormAbout.Label4" />
+      <reference referencedUin="delphi:e_method:src:GUI:AboutUnit.TFormAbout.OkButtonClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:AboutUnit.TFormAbout.LabelVersionClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:AboutUnit.TFormAbout.LabelAuthorClick(System.TObject)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:GUI:AboutUnit.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:GUI:AboutUnit.@unitclass.AboutForm" />
+      <reference referencedUin="delphi:l_ast:src:GUI:AboutUnit.@unitclass.AboutForm" />
+    </reference>
   </view>
 </nodeSet>

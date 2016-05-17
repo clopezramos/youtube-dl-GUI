@@ -5,10 +5,21 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.UITypes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, Vcl.Mask, Vcl.ComCtrls,
-  JvComponentBase, JvCreateProcess, JvExMask, JvToolEdit, AboutUnit;
+  JvComponentBase, JvCreateProcess, JvExMask, JvToolEdit, AboutUnit, CustomTextEditUnit;
 
 type
   TFormMain = class(TForm)
+  private
+    outputPath: String;
+
+    procedure startDownload(Url: string; Path: string; Format: string);
+    procedure readConfigFile(Parameter: string; var Output: string);
+    procedure writeConfigFile(Parameter: string; Input: string);
+    procedure addLog(const Text: string);
+    procedure clearLogs;
+    function getPercentageLog(Text: string; var percentage: string) : Boolean;
+    function getQualityString(Link: string) : string;
+  published
     MainPanel: TPanel;
     MainMenu: TMainMenu;
     FileMenu: TMenuItem;
@@ -16,13 +27,16 @@ type
     Separator1MenuItem: TMenuItem;
     HelpMenuItem: TMenuItem;
     AboutMenuItem: TMenuItem;
-    UrlEdit: TEdit;
+    UrlEdit: TCustomEdit;
     UrlLabel: TLabel;
     GoButton: TButton;
     PathLabel: TLabel;
     PathJvDirectoryEdit: TJvDirectoryEdit;
     OutputBox: TListBox;
     ProgressBar: TProgressBar;
+    QualityBox: TListBox;
+    QualityLabel: TLabel;
+    RefreshQualityButton: TButton;
 
     { TODO 1 -oclopezramos -cimprove : Change youtubedlProcess visibility to private }
     YoutubedlProcess: TJvCreateProcess;
@@ -35,15 +49,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure YoutubedlProcessRead(Sender: TObject; const S: string; const StartsOnNewLine: Boolean);
     procedure YoutubedlProcessTerminate(Sender: TObject; ExitCode: Cardinal);
-  private
-    outputPath: String;
-
-    procedure startDownloadProcess;
-    procedure readConfigFile(Parameter: string; var Output: string);
-    procedure writeConfigFile(Parameter: string; Input: string);
-    procedure addLog(const Text: string);
-    procedure clearLogs;
-    function getPercentageLog(Text: string; var percentage: string) : Boolean;
+    procedure UrlEditOnBeforePaste(Sender: TObject; var s: String);
+    procedure RefreshQualityButtonClick(Sender: TObject);
   public
 
   end;
@@ -58,6 +65,9 @@ implementation
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   readConfigFile('outputPath', outputPath);
+  UrlEdit.Create(Self);
+  UrlEdit.OnBeforePaste := UrlEditOnBeforePaste;
+  UrlEdit.SetBounds(19, 40, 482,21);
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -73,9 +83,12 @@ end;
 procedure TFormMain.GoButtonClick(Sender: TObject);
 begin
   clearLogs;
-  startDownloadProcess;
+  startDownload(UrlEdit.Text, PathJvDirectoryEdit.Text, '');
   ProgressBar.Position := 0;
   GoButton.Enabled:= false;
+  UrlEdit.Enabled:= false;
+  PathJvDirectoryEdit.Enabled:= false;
+  RefreshQualityButton.Enabled:= false;
 end;
 
 procedure TFormMain.AboutMenuItemClick(Sender: TObject);
@@ -112,15 +125,28 @@ procedure TFormMain.YoutubedlProcessTerminate(Sender: TObject;
   ExitCode: Cardinal);
 begin
   GoButton.Enabled:= true;
+  UrlEdit.Enabled:= true;
+  PathJvDirectoryEdit.Enabled:= true;
+  RefreshQualityButton.Enabled:= true;
+end;
+
+procedure TFormMain.UrlEditOnBeforePaste(Sender: TObject; var s: String);
+begin
+  getQualityString(s);
+end;
+
+procedure TFormMain.RefreshQualityButtonClick(Sender: TObject);
+begin
+  getQualityString(UrlEdit.Text);
 end;
 
 { Private procedures }
 
-procedure TFormMain.startDownloadProcess;
+procedure TFormMain.startDownload(Url: string; Path: string; Format: string);
 var
   commands: string;
 begin
-  commands := ' ' + '-o "' + PathJvDirectoryEdit.Text + '\%(title)s.%(ext)s' + '" ' + UrlEdit.Text;
+  commands := ' ' + '-o "' + Path + '\%(title)s.%(ext)s' + '" ' + '-f ' + Format + ' ' + Url;
   YoutubedlProcess.CommandLine := commands;
   YoutubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
   YoutubedlProcess.ConsoleOptions := YoutubedlProcess.ConsoleOptions + [coRedirect];
@@ -236,6 +262,20 @@ begin
     end;
   end;
   StringList.Free();
+end;
+
+function TFormMain.getQualityString(Link: string) : string;
+var
+  commands: string;
+begin
+  Result:= '';
+  commands := ' ' + '-F "' + Link + '"';
+  YoutubedlProcess.CommandLine := commands;
+  YoutubedlProcess.ApplicationName :=  GetCurrentDir + '\dep\youtube-dl.exe';
+  YoutubedlProcess.ConsoleOptions := YoutubedlProcess.ConsoleOptions + [coRedirect];
+  YoutubedlProcess.StartupInfo.ShowWindow := swHide;
+  YoutubedlProcess.StartupInfo.DefaultWindowState := False;
+  YoutubedlProcess.Run;
 end;
 
 end.

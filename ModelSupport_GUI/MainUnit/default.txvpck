@@ -4,5 +4,50 @@
     <property name="$defaultDiagram" value="true" />
     <property name="$metaclass" value="Package Diagram" />
     <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:GUI:MainUnit.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.@unitclass.MainForm" />
+      <reference referencedUin="delphi:l_ast:src:GUI:MainUnit.@unitclass.MainForm" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:GUI:MainUnit.TFormMain">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,218,625" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.RefreshQualityButtonClick(System.TObject)" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.outputPath" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.startDownload(System.string,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.readConfigFile(System.string,ref@System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.writeConfigFile(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.addLog(System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.clearLogs()" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.getPercentageLog(System.string,ref@System.string)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.getQualityString(System.string)" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.MainPanel" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.MainMenu" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.FileMenu" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.ExitMenuItem" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.Separator1MenuItem" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.HelpMenuItem" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.AboutMenuItem" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.UrlEdit" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.UrlLabel" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.GoButton" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.PathLabel" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.PathJvDirectoryEdit" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.OutputBox" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.ProgressBar" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.QualityBox" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.QualityLabel" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.RefreshQualityButton" />
+      <reference referencedUin="delphi:e_field:src:GUI:MainUnit.TFormMain.YoutubedlProcess" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.FormCreate(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.FormClose(System.TObject,ref@System.UITypes.TCloseAction)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.GoButtonClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.AboutMenuItemClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.ExitMenuItemClick(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.FormShow(System.TObject)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.YoutubedlProcessRead(System.TObject,System.string,System.Boolean)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.YoutubedlProcessTerminate(System.TObject,System.Cardinal)" />
+      <reference referencedUin="delphi:e_method:src:GUI:MainUnit.TFormMain.UrlEditOnBeforePaste(System.TObject,ref@System.string)" />
+    </reference>
   </view>
 </nodeSet>

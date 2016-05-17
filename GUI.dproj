@@ -90,12 +90,15 @@
         <DCCReference Include="AboutUnit.pas">
             <Form>AboutForm</Form>
         </DCCReference>
+        <DCCReference Include="CustomTextEditUnit.pas"/>
         <None Include="ModelSupport_GUI\default.txaPackage"/>
         <None Include="ModelSupport_GUI\default.txvpck"/>
         <None Include="ModelSupport_GUI\AboutUnit\default.txvpck"/>
         <None Include="ModelSupport_GUI\GUI\default.txvpck"/>
         <None Include="ModelSupport_GUI\MainUnit\default.txvpck"/>
         <None Include="ModelSupport_GUI\GUI\default.txaPackage"/>
+        <None Include="ModelSupport_GUI\CustomTextEditUnit\default.txvpck"/>
+        <None Include="ModelSupport_GUI\CustomTextEditUnit\default.txaPackage"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

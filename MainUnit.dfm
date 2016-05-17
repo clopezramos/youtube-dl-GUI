@@ -43,12 +43,18 @@ object FormMain: TFormMain
       Height = 13
       Caption = 'Path'
     end
-    object UrlEdit: TEdit
+    object QualityLabel: TLabel
+      Left = 19
+      Top = 130
+      Width = 64
+      Height = 13
+      Caption = 'Select quality'
+    end
+    object UrlEdit: TCustomEdit
       Left = 19
       Top = 40
       Width = 482
       Height = 21
-      TabOrder = 0
     end
     object GoButton: TButton
       Left = 426
@@ -88,6 +94,23 @@ object FormMain: TFormMain
       Width = 386
       Height = 25
       TabOrder = 4
+    end
+    object QualityBox: TListBox
+      Left = 19
+      Top = 149
+      Width = 426
+      Height = 97
+      ItemHeight = 13
+      TabOrder = 5
+    end
+    object RefreshQualityButton: TButton
+      Left = 451
+      Top = 221
+      Width = 50
+      Height = 25
+      Caption = 'Refresh'
+      TabOrder = 6
+      OnClick = RefreshQualityButtonClick
     end
   end
   object MainMenu: TMainMenu

@@ -3,7 +3,8 @@ program GUI;
 uses
   Vcl.Forms,
   MainUnit in 'MainUnit.pas' {MainForm},
-  AboutUnit in 'AboutUnit.pas' {AboutForm};
+  AboutUnit in 'AboutUnit.pas' {AboutForm},
+  CustomTextEditUnit in 'CustomTextEditUnit.pas';
 
 {$R *.res}
 
